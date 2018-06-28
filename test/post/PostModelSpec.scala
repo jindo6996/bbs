@@ -4,6 +4,7 @@ import org.specs2.runner.JUnitRunner
 import play.api.test.PlaySpecification
 import scalikejdbc._
 import scalikejdbc.config._
+import DBSetting
 
 import scala.util.{ Failure, Success }
 
