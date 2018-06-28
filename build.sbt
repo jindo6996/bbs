@@ -26,4 +26,11 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.3.7",
   "junit"          % "junit"     % "4.9"   withSources()
 )
+
+import scalariform.formatter.preferences._
+scalariformPreferences := scalariformPreferences.value
+  .setPreference(AlignSingleLineCaseStatements, true)
+  .setPreference(DoubleIndentConstructorArguments, true)
+  .setPreference(DanglingCloseParenthesis, Preserve)
+
 libraryDependencies += specs2 % Test
