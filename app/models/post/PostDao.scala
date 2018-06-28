@@ -9,7 +9,7 @@ import scala.util.Try
 class PostDao() {
   def getAll: Try[List[Post]] = Try {
     DB readOnly { implicit session =>
-      sql"SELECT * FROM BBS_Post".map(a => (Post(a.int("id"), a.string("title")))).list.apply()
+      sql"SELECT * FROM posts".map(a => (Post(a.int("id"), a.string("title")))).list.apply()
     }
   }
 }

@@ -16,15 +16,15 @@ class PostSpecTest extends PlaySpecification {
     "all" in {
       "return list of all posts" in {
         implicit val session: DBSession = AutoSession
-        sql"DELETE FROM BBS_Post".update.apply()
+        sql"DELETE FROM posts".update.apply()
         var postsEmpty = postModels.getAll match {
           case Success(posts) => posts
         }
         postsEmpty.size must beEqualTo(0)
 
-        sql"INSERT INTO BBS_Post(id,title) VALUES(${1},${"Test"})".update.apply()
-        sql"INSERT INTO BBS_Post(id,title) VALUES(${2},${"Test"})".update.apply()
-        sql"INSERT INTO BBS_Post(id,title) VALUES(${3},${"Test"})".update.apply()
+        sql"INSERT INTO posts(id,title) VALUES(${1},${"Test"})".update.apply()
+        sql"INSERT INTO posts(id,title) VALUES(${2},${"Test"})".update.apply()
+        sql"INSERT INTO posts(id,title) VALUES(${3},${"Test"})".update.apply()
         val posts = postModels.getAll match {
           case Success(posts) => posts
         }
