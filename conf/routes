@@ -14,6 +14,6 @@ GET   /posts                        controllers.PostController.listPost
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
-#GET     /posts                      controllers.post.PostController.listPost
+GET     /post-:id                   controllers.PostController.getPostByID(id:Int)
 
       
