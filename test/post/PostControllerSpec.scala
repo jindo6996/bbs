@@ -1,14 +1,14 @@
-package controllers
-
+package postTest
+import controllers.PostController
 import models.post._
 import play.api.test._
 import play.api.test.Helpers._
 import org.specs2.mock.Mockito
 import scalikejdbc.config.DBs
-import scala.util.Success
-import setup._
 
-class PostControllerSpec extends PlaySpecification with Mockito with DBSetting {
+import scala.util.Success
+
+class PostControllerSpec extends PlaySpecification with Mockito {
   val mockPostDAO: PostDao = mock[PostDao]
   val controller = new PostController(mockPostDAO, stubControllerComponents())
 
