@@ -14,13 +14,11 @@ class SystemError extends PlaySpecification with Mockito {
   "Request Client" should {
     "Get All fail" in {
       mockPostDAO.getAll returns Failure(new Exception("System error"))
-      val result = controller.listPost.apply(FakeRequest())
-      status(result) must equalTo(500)
+      controller.listPost.apply(FakeRequest()) must throwA[Exception])
     }
     "Get By ID fail" in {
-      mockPostDAO.getPostByID(5) returns Failure()
-      val result = controller.getPostByID(5).apply(FakeRequest())
-      status(result) must equalTo(500)
+      mockPostDAO.getByID(5) returns Failure(new Exception("System error"))
+      controller.getPostByID(5).apply(FakeRequest()) must throwA[Exception]
     }
   }
 }

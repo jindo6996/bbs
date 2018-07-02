@@ -42,7 +42,7 @@ class PostSpecTest extends PlaySpecification with DBSetting {
         using(ConnectionPool.borrow()) { conn =>
           implicit val session: DBSession = AutoSession
           sql"DELETE FROM posts".update.apply()
-          var postsEmpty = postModels.getPostByID(1) match {
+          var postsEmpty = postModels.getByID(1) match {
             case Success(posts) => posts
           }
           postsEmpty.size must beEqualTo(0)
