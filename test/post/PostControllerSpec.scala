@@ -40,7 +40,7 @@ class PostControllerSpec extends PlaySpecification with Mockito {
         contentAsString(result) must contain("Content")
       }
       "Not found" in {
-        val post = None: Option[Post]
+        val post : Option[Post] = None
         mockPostDAO.getPostByID(0) returns Success(post)
         val result = controller.getPostByID(0).apply(FakeRequest())
         status(result) must equalTo(OK)

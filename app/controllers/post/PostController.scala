@@ -14,9 +14,6 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
     }
   }
   def getPostByID(id: Int) = Action {
-    postDao.getPostByID(id) match {
-      case Success(posts) => Ok(views.html.post.viewPost(posts))
-      case Failure(ex)    => InternalServerError("A server error occurred: " + ex.getMessage)
-    }
+    Ok(views.html.post.viewPost(postDao.getByID(id).get))
   }
 }

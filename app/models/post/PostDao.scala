@@ -9,15 +9,15 @@ import scala.util.Try
 class PostDao() {
   def getAll: Try[List[Post]] = Try {
     DB readOnly { implicit session =>
-      sql"SELECT * FROM posts".map(a => extract(a)).list.apply()
+      sql"SELECT * FROM posts".map(extract).list.apply()
     }
   }
-  def getPostByID(id: Int): Try[Option[Post]] = Try {
+  def getByID(id: Int): Try[Option[Post]] = Try {
     DB readOnly { implicit session =>
-      sql"SELECT * FROM posts WHERE id =$id".map(a => extract(a)).single().apply()
+      sql"SELECT * FROM posts WHERE id =$id".map(extract).single().apply()
     }
   }
 
-  def extract(rs: WrappedResultSet): Post =
+  private def extract(rs: WrappedResultSet): Post =
     Post(rs.int("id"), rs.string("title"), rs.string("content"), rs.string("mail"))
 }
