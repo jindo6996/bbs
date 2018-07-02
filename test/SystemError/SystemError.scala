@@ -1,17 +1,20 @@
 package SystemError
 
 import controllers.PostController
+import controllers.post.PostForm.PostInfo
 import models.post.{ Post, PostDao }
 import play.api.test._
 import play.api.test.Helpers._
 import org.specs2.mock.Mockito
-import scala.util.{ Success, Failure }
+import play.api.test.CSRFTokenHelper._
+
+import scala.util.{ Failure, Success }
 
 class SystemError extends PlaySpecification with Mockito {
   val mockPostDAO: PostDao = mock[PostDao]
   val controller = new PostController(mockPostDAO, stubControllerComponents())
   val titleTest = "test"
-  "Request Client" should {
+  "Server error" should {
     "Get All fail" in {
       mockPostDAO.getAll returns Failure(new Exception("System error"))
       controller.listPost.apply(FakeRequest()) must throwA[Exception]
@@ -19,6 +22,12 @@ class SystemError extends PlaySpecification with Mockito {
     "Get By ID fail" in {
       mockPostDAO.getByID(5) returns Failure(new Exception("System error"))
       controller.getPostByID(5).apply(FakeRequest()) must throwA[Exception]
+    }
+    "Create Post fail" in {
+      val postInfo = PostInfo("test", "test", "t@gmail.com")
+      mockPostDAO.createPost(postInfo) returns Failure(new Exception)
+      val result = controller.savePost().apply(FakeRequest().withCSRFToken)
+      status(result) mustEqual (400)
     }
   }
 }

@@ -1,5 +1,6 @@
 package postTest
 
+import controllers.post.PostForm.PostInfo
 import models.post.{ Post, PostDao }
 import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
@@ -10,7 +11,7 @@ import setup._
 
 import scala.util.{ Failure, Success }
 
-@RunWith(classOf[JUnitRunner])
+//@RunWith(classOf[JUnitRunner])
 class PostSpecTest extends PlaySpecification with DBSetting {
   val conn: java.sql.Connection = ConnectionPool('bbs_test).borrow()
   val postModels: PostDao = new PostDao()
@@ -55,6 +56,20 @@ class PostSpecTest extends PlaySpecification with DBSetting {
           posts.size must beEqualTo(3)
           posts.head.content must beEqualTo("Test")
           posts.last.mail must beEqualTo("jindo@gmail.com")
+        }
+      }
+    }
+    "Create post" in {
+      "Success" in {
+        using(ConnectionPool.borrow()) { conn =>
+          implicit val session: DBSession = AutoSession
+          sql"DELETE FROM posts".update.apply()
+          sql"ALTER TABLE posts AUTO_INCREMENT = 1".update.apply()
+          sql"INSERT INTO posts(id,title,content,mail) VALUES(${1},${"Test"},${"Test"},${"jindo@gmail.com"})".update.apply()
+          val post = PostInfo("test", "test content", "test@gmail.com")
+          postModels.createPost(post) match {
+            case Success(autoIncrement) => autoIncrement mustEqual (2)
+          }
         }
       }
     }
