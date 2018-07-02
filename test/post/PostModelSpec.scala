@@ -37,5 +37,26 @@ class PostSpecTest extends PlaySpecification with DBSetting {
         }
       }
     }
+    "Get by ID" in {
+      "Return post" in {
+        using(ConnectionPool.borrow()) { conn =>
+          implicit val session: DBSession = AutoSession
+          sql"DELETE FROM posts".update.apply()
+          var postsEmpty = postModels.getByID(1) match {
+            case Success(posts) => posts
+          }
+          postsEmpty.size must beEqualTo(0)
+          sql"INSERT INTO posts(id,title,content,mail) VALUES(${1},${"Test"},${"Test"},${"jindo@gmail.com"})".update.apply()
+          sql"INSERT INTO posts(id,title,content,mail) VALUES(${2},${"Test"},${"Test"},${"jindo@gmail.com"})".update.apply()
+          sql"INSERT INTO posts(id,title,content,mail) VALUES(${3},${"Test"},${"Test"},${"jindo@gmail.com"})".update.apply()
+          val posts = postModels.getAll match {
+            case Success(posts) => posts
+          }
+          posts.size must beEqualTo(3)
+          posts.head.content must beEqualTo("Test")
+          posts.last.mail must beEqualTo("jindo@gmail.com")
+        }
+      }
+    }
   }
 }

@@ -9,7 +9,7 @@
                 @if(!posts.isEmpty) {
                     @posts.map { post =>
                     <div class="blog-post">
-                        <h2 class="blog-post-title">@post.title</h2>
+                        <h2 class="blog-post-title"><a href ="@routes.PostController.getPostByID(post.id)">@post.title</a></h2>
                     </div>
                     }
                 } else {

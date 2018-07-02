@@ -1,0 +1,19 @@
+@import models.post.Post
+@(post: Option[Post])
+@main("Jindo") {
+<h2>Post:</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 blog-main">
+        @if(post.isDefined) {
+            <h4>@post.get.title</h4>
+            <p>Author: @post.get.mail</p>
+            <pre>@post.get.content</pre>
+        } else {
+            <p>Post Not Found</p>
+        }
+        </div>
+    </div>
+</div>
+}
+
