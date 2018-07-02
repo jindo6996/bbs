@@ -1,0 +1,16 @@
+@(postForm: Form[controllers.post.PostForm.PostInfo])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import helper._
+
+@main("Post Submission"){
+    <h2>New Post</h2>
+    @helper.form(action =  helper.CSRF(routes.PostController.savePost())) {
+        @helper.inputText(postForm("email"))
+        @helper.inputText(postForm("title"))
+        @helper.textarea(postForm("content"),'rows -> 10, 'cols -> 50)
+
+        <div class="actions">
+            <button type="submit" value="Create Post" name = "save">Submit</button>
+        </div>
+    }
+}
