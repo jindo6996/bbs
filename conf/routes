@@ -16,8 +16,8 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /post/:id                   controllers.PostController.getPostByID(id:Int)
 
-GET     /create-post                controllers.PostController.addPost
+GET     /create/post                controllers.PostController.addPost
 
-POST    /create-post                controllers.PostController.savePost()
+POST    /create/post                controllers.PostController.savePost()
 
       

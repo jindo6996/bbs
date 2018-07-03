@@ -49,7 +49,7 @@ class PostControllerSpec extends PlaySpecification with Mockito {
       }
     }
     //----------------
-    "Add post" in {
+    "addPost" in {
       "Go to Add post page" in {
         val result = controller.addPost().apply(FakeRequest(GET, "/create-post").withCSRFToken)
         status(result) must equalTo(OK)
