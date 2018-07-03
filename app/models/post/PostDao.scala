@@ -1,6 +1,6 @@
 package models.post
 
-import controllers.post.PostForm.PostInfo
+import controllers.form.post.PostForm.PostInfo
 import scalikejdbc.DB
 import scalikejdbc._
 import javax.inject.Singleton

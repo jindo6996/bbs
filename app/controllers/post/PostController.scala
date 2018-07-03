@@ -1,5 +1,5 @@
 package controllers
-import controllers.post.PostForm.postForm
+import controllers.form.post.PostForm.postForm
 import javax.inject._
 import play.api.mvc._
 import models.post.{ Post, PostDao }

@@ -1,7 +1,7 @@
 package SystemError
 
 import controllers.PostController
-import controllers.post.PostForm.PostInfo
+import controllers.form.post.PostForm.PostInfo
 import models.post.{ Post, PostDao }
 import play.api.test._
 import play.api.test.Helpers._

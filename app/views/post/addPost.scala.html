@@ -1,4 +1,5 @@
-@(postForm: Form[controllers.post.PostForm.PostInfo])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+@import controllers.form.post.PostForm
+@(postForm: Form[PostForm.PostInfo])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
 
 @import helper._
 

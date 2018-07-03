@@ -1,6 +1,6 @@
 package postTest
 
-import controllers.post.PostForm.PostInfo
+import controllers.form.post.PostForm.PostInfo
 import models.post.{ Post, PostDao }
 import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
