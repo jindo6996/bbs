@@ -1,14 +1,14 @@
 package controllers
-import controllers.form.post.PostForm.postForm
+import controllers.form.post.PostForm.{ PostInfo, postForm }
 import javax.inject._
 import play.api.mvc._
 import models.post.{ Post, PostDao }
-import controllers.BaseController
+import controllers.exception._
 
 import scala.util.{ Failure, Success, Try }
 
 @Singleton
-class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController with CustomException {
+class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController {
   def listPost = Action {
     Ok(views.html.post.listPost(postDao.getAll.get))
   }
@@ -27,10 +27,8 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
       id <- postDao.createPost(post)
     } yield (id)
     result match {
-      case Success(id) => Ok(views.html.post.viewPost(postDao.getByID(id.toInt).get))
-      case Failure(e: Exception) => validateException(postForm, e) match {
-        case Success(form) => BadRequest(views.html.post.addPost(form))
-      }
+      case Success(id)                              => Ok(views.html.post.viewPost(postDao.getByID(id.toInt).get))
+      case Failure(e: FormErrorException[PostInfo]) => BadRequest(views.html.post.addPost(e.formError))
     }
   }
 }
