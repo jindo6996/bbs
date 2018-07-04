@@ -23,11 +23,5 @@ class SystemError extends PlaySpecification with Mockito {
       mockPostDAO.getByID(5) returns Failure(new Exception("System error"))
       controller.getPostByID(5).apply(FakeRequest()) must throwA[Exception]
     }
-    "Create Post fail" in {
-      val postInfo = PostInfo("test", "test", "t@gmail.com")
-      mockPostDAO.createPost(postInfo) returns Failure(new Exception)
-      val result = controller.savePost().apply(FakeRequest().withCSRFToken)
-      status(result) mustEqual (400)
-    }
   }
 }

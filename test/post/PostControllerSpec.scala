@@ -7,7 +7,7 @@ import play.api.test.Helpers._
 import org.specs2.mock.Mockito
 import scalikejdbc.config.DBs
 
-import scala.util.Success
+import scala.util.{ Failure, Success }
 import play.api.test.CSRFTokenHelper._
 import scalikejdbc.DBSession
 
@@ -71,6 +71,12 @@ class PostControllerSpec extends PlaySpecification with Mockito {
       "Unsuccess: Title is null" in {
         val result = controller.savePost().apply(FakeRequest(POST, "/create/post").withFormUrlEncodedBody("title" -> "", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
         contentAsString(result) must contain("error.required")
+      }
+      "Create Post fail" in {
+        val postInfo = PostInfo("test", "test", "t@gmail.com")
+        mockPostDAO.createPost(postInfo) returns Failure(new Exception)
+        val result = controller.savePost().apply(FakeRequest().withCSRFToken)
+        status(result) mustEqual (400)
       }
     }
 
