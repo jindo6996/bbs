@@ -25,10 +25,13 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
     val result = for {
       post <- validateForm(postForm)
       id <- postDao.createPost(post)
-    } yield (id)
+    } yield id
     result match {
-      case Success(id)                              => Ok(views.html.post.viewPost(postDao.getByID(id.toInt).get))
-      case Failure(e: FormErrorException[PostInfo]) => BadRequest(views.html.post.addPost(e.formError))
+      case Success(id) => Ok(views.html.post.viewPost(postDao.getByID(id.toInt).get))
+      case Failure(e: Exception) => e match {
+        case formErr: FormErrorException[PostInfo] => BadRequest(views.html.post.addPost(formErr.formError))
+        case _                                     => InternalServerError(e.getMessage)
+      }
     }
   }
 }
