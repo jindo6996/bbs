@@ -10,15 +10,15 @@ GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
 GET     /message                    controllers.AsyncController.message
 
-GET     /post/add                   controllers.PostController.addPost
+GET     /posts/add                   controllers.PostController.addPost
 
-POST    /post/store                 controllers.PostController.savePost()
+POST    /posts/store                 controllers.PostController.savePost()
 
 GET   /posts                        controllers.PostController.listPost
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
-GET     /post/:id                   controllers.PostController.getPostByID(id:Int)
+GET     /posts/:id                   controllers.PostController.getPostByID(id:Int)
 
 
 

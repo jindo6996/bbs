@@ -61,15 +61,15 @@ class PostControllerSpec extends PlaySpecification with Mockito {
         val post1 = Post(5, "Post Success", "have all requirement", "test@gmail.com")
         mockPostDAO.insert(any[PostInfo])(any[DBSession]) returns Success(5)
         mockPostDAO.getByID(5) returns Success(Option(post1))
-        val result = controller.savePost().apply(FakeRequest(POST, "/post/store").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
+        val result = controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
         status(result) must equalTo(200)
       }
       "Unsuccess: email error" in {
-        val result = controller.savePost().apply(FakeRequest(POST, "/post/store").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaestgmail.com").withCSRFToken)
+        val result = controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaestgmail.com").withCSRFToken)
         contentAsString(result) must contain("error.email")
       }
       "Unsuccess: Title is null" in {
-        val result = controller.savePost().apply(FakeRequest(POST, "/post/store").withFormUrlEncodedBody("title" -> "", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
+        val result = controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody("title" -> "", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
         contentAsString(result) must contain("error.required")
       }
       "Create Post fail" in {
