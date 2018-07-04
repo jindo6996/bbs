@@ -24,7 +24,7 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
   def savePost() = Action { implicit request =>
     val result = for {
       post <- validateForm(postForm)
-      id <- postDao.createPost(post)
+      id <- postDao.insert(post)
     } yield id
     result match {
       case Success(id) => Ok(views.html.post.viewPost(postDao.getByID(id.toInt).get))

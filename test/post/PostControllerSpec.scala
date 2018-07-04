@@ -59,7 +59,7 @@ class PostControllerSpec extends PlaySpecification with Mockito {
       }
       "Save post success then show this post " in {
         val post1 = Post(5, "Post Success", "have all requirement", "test@gmail.com")
-        mockPostDAO.createPost(any[PostInfo])(any[DBSession]) returns Success(5)
+        mockPostDAO.insert(any[PostInfo])(any[DBSession]) returns Success(5)
         mockPostDAO.getByID(5) returns Success(Option(post1))
         val result = controller.savePost().apply(FakeRequest(POST, "/create/post").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
         status(result) must equalTo(200)

@@ -67,7 +67,7 @@ class PostSpecTest extends PlaySpecification with DBSetting {
           sql"ALTER TABLE posts AUTO_INCREMENT = 1".update.apply()
           sql"INSERT INTO posts(id,title,content,mail) VALUES(${1},${"Test"},${"Test"},${"jindo@gmail.com"})".update.apply()
           val post = PostInfo("test", "test content", "test@gmail.com")
-          postModels.createPost(post) match {
+          postModels.insert(post) match {
             case Success(autoIncrement) => autoIncrement mustEqual (2)
           }
         }

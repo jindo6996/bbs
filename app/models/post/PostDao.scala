@@ -19,8 +19,8 @@ class PostDao() {
       sql"SELECT * FROM posts WHERE id =$id".map(extract).single().apply()
     }
   }
-  def createPost(postResult: PostInfo)(implicit session: DBSession = AutoSession): Try[Long] = Try {
-    sql"insert into posts(title,content,mail) values (${postResult.title}, ${postResult.content}, ${postResult.email})".updateAndReturnGeneratedKey().apply()
+  def insert(postInfo: PostInfo)(implicit session: DBSession = AutoSession): Try[Long] = Try {
+    sql"insert into posts(title,content,mail) values (${postInfo.title}, ${postInfo.content}, ${postInfo.email})".updateAndReturnGeneratedKey().apply()
   }
   private def extract(rs: WrappedResultSet): Post =
     Post(rs.int("id"), rs.string("title"), rs.string("content"), rs.string("mail"))
