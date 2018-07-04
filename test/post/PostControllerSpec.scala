@@ -1,5 +1,6 @@
 package postTest
 import controllers.PostController
+import controllers.form.post.PostForm.PostInfo
 import models.post._
 import play.api.test._
 import play.api.test.Helpers._
@@ -8,6 +9,7 @@ import scalikejdbc.config.DBs
 
 import scala.util.Success
 import play.api.test.CSRFTokenHelper._
+import scalikejdbc.DBSession
 
 class PostControllerSpec extends PlaySpecification with Mockito {
   val mockPostDAO: PostDao = mock[PostDao]
@@ -51,20 +53,23 @@ class PostControllerSpec extends PlaySpecification with Mockito {
     //----------------
     "addPost" in {
       "Go to Add post page" in {
-        val result = controller.addPost().apply(FakeRequest(GET, "/create-post").withCSRFToken)
+        val result = controller.addPost().apply(FakeRequest(GET, "/create/post").withCSRFToken)
         status(result) must equalTo(OK)
         contentAsString(result) must contain("Post Submission")
       }
       "Save post success then show this post " in {
-        val result = controller.savePost().apply(FakeRequest(POST, "/create-post").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
-        contentAsString(result) must contain("Post Success")
+        val post1 = Post(5, "Post Success", "have all requirement", "test@gmail.com")
+        mockPostDAO.createPost(any[PostInfo])(any[DBSession]) returns Success(5)
+        mockPostDAO.getByID(5) returns Success(Option(post1))
+        val result = controller.savePost().apply(FakeRequest(POST, "/create/post").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
+        status(result) must equalTo(200)
       }
       "Unsuccess: The length of the email exceeds 100" in {
-        val result = controller.savePost().apply(FakeRequest(POST, "/create-post").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaest@gmail.com").withCSRFToken)
+        val result = controller.savePost().apply(FakeRequest(POST, "/create/post").withFormUrlEncodedBody("title" -> "Post Success", "content" -> "have all requirement", "email" -> "taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaest@gmail.com").withCSRFToken)
         contentAsString(result) must contain("error.maxLength")
       }
       "Unsuccess: Title is null" in {
-        val result = controller.savePost().apply(FakeRequest(POST, "/create-post").withFormUrlEncodedBody("title" -> "", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
+        val result = controller.savePost().apply(FakeRequest(POST, "/create/post").withFormUrlEncodedBody("title" -> "", "content" -> "have all requirement", "email" -> "test@gmail.com").withCSRFToken)
         contentAsString(result) must contain("error.required")
       }
     }
