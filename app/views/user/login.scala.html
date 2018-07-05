@@ -1,0 +1,16 @@
+@import controllers.form.login.LoginForm
+@(loginForm: Form[LoginForm.LoginInfo])(implicit request: RequestHeader, messagesProvider: MessagesProvider, flash: Flash)
+
+@main("Login"){
+    <h2>Login</h2>
+    @if(loginForm.hasGlobalErrors){
+        <p>@loginForm.globalError.get.message</p>
+    }
+    @helper.form(action =  helper.CSRF(routes.UserController.validate())) {
+        @helper.inputText(loginForm("mail"))
+        @helper.inputPassword(loginForm("password"))
+        <div class="actions">
+            <button type="submit" value="Login" name = "Login">Login</button>
+        </div>
+    }
+}

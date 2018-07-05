@@ -1,5 +1,5 @@
 @import models.post.Post
-@(posts: List[Post])
+@(posts: List[Post])(implicit flash: Flash)
 @main("Jindo") {
     <h2>Posts</h2>
     <div class="container">
