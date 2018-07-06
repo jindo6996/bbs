@@ -23,8 +23,8 @@ class AuthController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
   //--------
   def validate = Action { implicit request =>
     val result = for {
-      form <- validateForm(loginForm)
-      userInfo <- userDao.getUserByUsernamePassword(form)
+      loginInfo <- validateForm(loginForm)
+      userInfo <- userDao.getUserByUsernamePassword(loginInfo)
     } yield userInfo
     result match {
       case Success(user) => Redirect(routes.HomeController.index()).withSession("mail" -> user.mail)
