@@ -5,7 +5,7 @@ CREATE TABLE posts(
 );
 INSERT INTO  posts(title) VALUES ("Title 1");
 INSERT INTO  posts(title) VALUES ("Title 2");
-INSERT INTO  posts(title) VALUES ("Title 3")
+INSERT INTO  posts(title) VALUES ("Title 3");
 
 -- Down
 DROP TABLE IF EXISTS posts;
