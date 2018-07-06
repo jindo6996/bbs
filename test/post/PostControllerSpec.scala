@@ -85,7 +85,7 @@ class PostControllerSpec extends PlaySpecification with Mockito {
         contentAsString(result) must contain("test@gmail.com")
       }
     }
-    "savePost" in {
+    "savePost when logged in" in {
       "when request's mail not match user'mail (user is logging), save with user'mail not request's mail" in {
         val post1 = Post(5, "Post Success", "have all requirement", "test@gmail.com")
         val postInfo = PostInfo("Post Success", "have all requirement", "test@gmail.com")
@@ -98,6 +98,16 @@ class PostControllerSpec extends PlaySpecification with Mockito {
         ).withSession("mail" -> "test@gmail.com").withCSRFToken)
         contentAsString(result) must not contain ("testmailfail@gmail.com")
         contentAsString(result) must contain("test@gmail.com")
+      }
+
+      "Unsuccess by system error" in {
+        val postInfo = PostInfo("Post Success", "have all requirement", "test@gmail.com")
+        mockPostDAO.insert(postInfo) returns Failure(new Exception)
+        controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody(
+          "title" -> "Post Success",
+          "content" -> "have all requirement",
+          "email" -> "test@gmail.com"
+        ).withSession("mail" -> "test@gmail.com").withCSRFToken) must throwAn[Exception]
       }
     }
 
