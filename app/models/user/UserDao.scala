@@ -9,7 +9,7 @@ import untils.EncryptPassword._
 import scala.util.Try
 
 @Singleton
-class UserDao()  {
+class UserDao() {
   def getUserByUsernamePassword(loginInfo: LoginInfo)(implicit session: DBSession = AutoSession): Try[User] = Try {
     val password = encryptPassword(loginInfo.password)
     sql"SELECT * FROM users WHERE mail=${loginInfo.mail} AND password=${password}".map(extract).single().apply()
