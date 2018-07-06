@@ -21,7 +21,7 @@ class AuthController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
     }
   }
   //--------
-  def validate = Action { implicit request =>
+  def processLogin = Action { implicit request =>
     val result = for {
       loginInfo <- validateForm(loginForm)
       userInfo <- userDao.getUserByUsernamePassword(loginInfo)

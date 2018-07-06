@@ -8,7 +8,7 @@ GET     /                           controllers.HomeController.index
 
 GET     /login                      controllers.AuthController.login
 
-POST     /login                     controllers.AuthController.validate
+POST     /login                     controllers.AuthController.processLogin
 
 GET     /logout                     controllers.AuthController.logout
 
