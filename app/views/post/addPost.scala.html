@@ -1,5 +1,5 @@
 @import controllers.form.post.PostForm
-@(postForm: Form[PostForm.PostInfo])(implicit request: RequestHeader, messagesProvider: MessagesProvider, flash: Flash)
+@(postForm: Form[PostForm.PostInfo])(implicit request: Request[_], messagesProvider: MessagesProvider)
 
 @main("Post Submission"){
     <h2>New Post</h2>

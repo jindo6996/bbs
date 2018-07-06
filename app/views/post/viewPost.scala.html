@@ -1,5 +1,5 @@
 @import models.post.Post
-@(post: Option[Post])(implicit flash: Flash)
+@(post: Option[Post])(implicit request: Request[_])
 @main("Jindo") {
 <h2>Post:</h2>
 <div class="container">

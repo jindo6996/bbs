@@ -1,5 +1,5 @@
 @import controllers.form.login.LoginForm
-@(loginForm: Form[LoginForm.LoginInfo])(implicit request: RequestHeader, messagesProvider: MessagesProvider, flash: Flash)
+@(loginForm: Form[LoginForm.LoginInfo])(implicit request: Request[_], messagesProvider: MessagesProvider)
 
 @main("Login"){
     <h2>Login</h2>

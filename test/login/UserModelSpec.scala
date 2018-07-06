@@ -39,7 +39,7 @@ class UserModelSpec extends PlaySpecification with DBSetting with EncryptPasswor
       "Login unsuccess" in {
         using(ConnectionPool.borrow()) { conn =>
           implicit val session: DBSession = AutoSession
-          // pass wrong
+          // wrong pass
           val userInfo1 = LoginInfo(mailTest, "abc")
           sql"DELETE FROM users".update().apply()
           sql"INSERT INTO users(mail,password) VALUES (${mailTest}, ${passTest})".update().apply()
@@ -47,6 +47,8 @@ class UserModelSpec extends PlaySpecification with DBSetting with EncryptPasswor
             case Failure(exception) => exception
           }
           userException1.getMessage mustEqual ("User not found")
+
+          // wrong user
           val userInfo2 = LoginInfo(mailTest + "abc", "123123")
           sql"DELETE FROM users".update().apply()
           sql"INSERT INTO users(mail,password) VALUES (${mailTest}, ${passTest})".update().apply()

@@ -1,12 +1,11 @@
 @import models.post.Post
-@(posts: List[Post])(implicit flash: Flash)
+@(posts: List[Post])(implicit request: Request[_])
 @main("Jindo") {
     <h2>Posts</h2>
     <div class="container">
         <div class="row">
             <div class="col-md-12 blog-main">
-
-                @if(!posts.isEmpty) {
+                @if(posts.nonEmpty) {
                     @posts.map { post =>
                     <div class="blog-post">
                         <h2 class="blog-post-title"><a href ="@routes.PostController.getPostByID(post.id)">@post.title</a></h2>

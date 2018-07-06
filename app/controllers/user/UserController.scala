@@ -28,8 +28,9 @@ class UserController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
   }
   //-----------
   def checkToLogin(userInfo: LoginInfo)(implicit request: Request[Any]): Result = {
+    val t = userDao.getUserByUsernamePassword(userInfo)
     userDao.getUserByUsernamePassword(userInfo) match {
-      case Success(user)                     => Redirect(routes.HomeController.index()).flashing("mail" -> user.mail)
+      case Success(user)                     => Redirect(routes.HomeController.index()).withSession("mail" -> user.mail)
       case Failure(e: UserNotFoundException) => BadRequest(views.html.user.login(LoginForm.loginForm.fill(userInfo).withGlobalError(e.msg)))
     }
   }
