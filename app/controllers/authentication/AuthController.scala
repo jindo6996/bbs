@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.authentication.AuthenticationSession
+import controllers.authentication.Authentication
 import controllers.exception.{ FormErrorException, UserNotFoundException }
 import controllers.form.login.LoginForm
 import controllers.form.login.LoginForm._
@@ -12,7 +12,7 @@ import scala.util.{ Failure, Success }
 
 @Singleton
 class AuthController @Inject() (userDao: UserDao, cc: ControllerComponents) extends AbstractController(cc)
-  with play.api.i18n.I18nSupport with BaseController with AuthenticationSession {
+  with play.api.i18n.I18nSupport with BaseController with Authentication {
   def login = Action { implicit request =>
     if (getMailInSession.isDefined) {
       Redirect(routes.HomeController.index())

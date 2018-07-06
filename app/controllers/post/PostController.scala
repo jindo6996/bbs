@@ -1,5 +1,5 @@
 package controllers
-import controllers.authentication.AuthenticationSession
+import controllers.authentication.Authentication
 import controllers.form.post.PostForm.{ PostInfo, postForm }
 import javax.inject._
 import play.api.mvc._
@@ -9,7 +9,7 @@ import controllers.exception._
 import scala.util.{ Failure, Success }
 
 @Singleton
-class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController with AuthenticationSession {
+class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController with Authentication {
   def listPost = Action { implicit request =>
     Ok(views.html.post.listPost(postDao.getAll.get))
   }
