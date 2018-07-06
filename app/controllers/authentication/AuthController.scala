@@ -30,7 +30,7 @@ class AuthController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
       case Success(user) => Redirect(routes.HomeController.index()).withSession("mail" -> user.mail)
       case Failure(e: Exception) => e match {
         case formErr: FormErrorException[LoginInfo]      => BadRequest(views.html.user.login(formErr.formError))
-        case userErr: EntityNotFoundException[LoginInfo] => BadRequest(views.html.user.login(LoginForm.loginForm.fill(userErr.user).withGlobalError(userErr.msg)))
+        case userErr: EntityNotFoundException[LoginInfo] => BadRequest(views.html.user.login(LoginForm.loginForm.fill(userErr.entity).withGlobalError(userErr.msg)))
       }
     }
   }
