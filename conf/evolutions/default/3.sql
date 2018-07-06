@@ -1,0 +1,8 @@
+-- up
+CREATE TABLE users(
+  id INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  mail VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(300) NOT NULL
+);
+-- down
+DROP TABLE users;

@@ -9,11 +9,11 @@ import scala.util.{ Failure, Success, Try }
 
 @Singleton
 class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController {
-  def listPost = Action {
+  def listPost = Action { implicit request =>
     Ok(views.html.post.listPost(postDao.getAll.get))
   }
   //--------------
-  def getPostByID(id: Int) = Action {
+  def getPostByID(id: Int) = Action { implicit request =>
     Ok(views.html.post.viewPost(postDao.getByID(id).get))
   }
   //--------------

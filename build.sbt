@@ -34,3 +34,5 @@ scalariformPreferences := scalariformPreferences.value
   .setPreference(DanglingCloseParenthesis, Preserve)
 
 libraryDependencies += specs2 % Test
+
+//routesGenerator := StaticRoutesGenerator

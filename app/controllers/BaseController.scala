@@ -12,7 +12,6 @@ trait BaseController {
       formWithErrors => Failure(FormErrorException("Error Form", formWithErrors)),
       result => Success(result)
     )
-
   }
 
 }
