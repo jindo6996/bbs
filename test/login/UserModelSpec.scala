@@ -1,20 +1,14 @@
 package login
 
-import controllers.form.login.LoginForm
 import controllers.form.login.LoginForm.LoginInfo
-import controllers.form.post.PostForm.PostInfo
-import scala.util.{ Failure, Success }
 import models.user.UserDao
-import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
 import play.api.test.PlaySpecification
 import scalikejdbc._
-import scalikejdbc.config._
 import setup._
-import untils.EncryptPassword
+import untils.EncryptPassword._
 
 import scala.util.{ Failure, Success }
-class UserModelSpec extends PlaySpecification with DBSetting with EncryptPassword {
+class UserModelSpec extends PlaySpecification with DBSetting {
   val conn: java.sql.Connection = ConnectionPool('bbs_test).borrow()
   val userModels: UserDao = new UserDao()
   val passTest = encryptPassword("123123")
