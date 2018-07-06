@@ -1,7 +1,7 @@
 package controllers
 
 import controllers.authentication.Authentication
-import controllers.exception.{ FormErrorException, UserNotFoundException }
+import controllers.exception.{ FormErrorException, EntityNotFoundException }
 import controllers.form.login.LoginForm
 import controllers.form.login.LoginForm._
 import javax.inject._
@@ -29,8 +29,8 @@ class AuthController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
     result match {
       case Success(user) => Redirect(routes.HomeController.index()).withSession("mail" -> user.mail)
       case Failure(e: Exception) => e match {
-        case formErr: FormErrorException[LoginInfo]    => BadRequest(views.html.user.login(formErr.formError))
-        case userErr: UserNotFoundException[LoginInfo] => BadRequest(views.html.user.login(LoginForm.loginForm.fill(userErr.user).withGlobalError(userErr.msg)))
+        case formErr: FormErrorException[LoginInfo]      => BadRequest(views.html.user.login(formErr.formError))
+        case userErr: EntityNotFoundException[LoginInfo] => BadRequest(views.html.user.login(LoginForm.loginForm.fill(userErr.user).withGlobalError(userErr.msg)))
       }
     }
   }

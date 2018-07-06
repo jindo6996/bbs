@@ -1,7 +1,7 @@
 package login
 
 import controllers.AuthController
-import controllers.exception.UserNotFoundException
+import controllers.exception.EntityNotFoundException
 import controllers.form.login.LoginForm.LoginInfo
 import models.user.{ User, UserDao }
 import org.specs2.mock.Mockito
@@ -50,7 +50,7 @@ class AuthControllerSpec extends PlaySpecification with Mockito {
       "since info wrong, login unsuccess then return user not found" in {
         val mockUserDAO: UserDao = mock[UserDao]
         val controller = new AuthController(mockUserDAO, stubControllerComponents())
-        mockUserDAO.getUserByUsernamePassword(loginInfo) returns Failure(UserNotFoundException("User not found", loginInfo))
+        mockUserDAO.getUserByUsernamePassword(loginInfo) returns Failure(EntityNotFoundException("User not found", loginInfo))
         val result = controller.processLogin.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@gmail.com", "password" -> "123123").withCSRFToken)
         contentAsString(result) must contain("User not found")
       }
