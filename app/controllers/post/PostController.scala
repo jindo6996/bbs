@@ -1,14 +1,15 @@
 package controllers
+import controllers.authentication.AuthenticationSession
 import controllers.form.post.PostForm.{ PostInfo, postForm }
 import javax.inject._
 import play.api.mvc._
 import models.post.{ Post, PostDao }
 import controllers.exception._
 
-import scala.util.{ Failure, Success, Try }
+import scala.util.{ Failure, Success }
 
 @Singleton
-class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController {
+class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController with AuthenticationSession {
   def listPost = Action { implicit request =>
     Ok(views.html.post.listPost(postDao.getAll.get))
   }
@@ -18,13 +19,19 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
   }
   //--------------
   def addPost() = Action { implicit request =>
-    Ok(views.html.post.addPost(postForm))
+    getMailInSession.map { mail =>
+      val postInfo = PostInfo("", "", mail)
+      val postFormLogged = postForm.fill(postInfo)
+      Ok(views.html.post.addPost(postFormLogged))
+    }.getOrElse(Ok(views.html.post.addPost(postForm)))
+
   }
   //------------
   def savePost() = Action { implicit request =>
     val result = for {
       post <- validateForm(postForm)
-      id <- postDao.insert(post)
+      postSolve = post.copy(email = if (getMailInSession.isDefined) getMailInSession.get else post.email)
+      id <- postDao.insert(postSolve)
     } yield id
     result match {
       case Success(id) => Ok(views.html.post.viewPost(postDao.getByID(id.toInt).get))

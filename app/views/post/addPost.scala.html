@@ -4,7 +4,11 @@
 @main("Post Submission"){
     <h2>New Post</h2>
     @helper.form(action =  helper.CSRF(routes.PostController.savePost())) {
-        @helper.inputText(postForm("email"))
+        @if(request.session.get("mail").isDefined){
+            @helper.inputText(postForm("email"),args = 'readonly -> "readonly")
+        }else {
+            @helper.inputText(postForm("email"))
+        }
         @helper.inputText(postForm("title"))
         @helper.textarea(postForm("content"),'rows -> 10, 'cols -> 50)
         <div class="actions">
