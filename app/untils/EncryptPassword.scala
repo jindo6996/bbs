@@ -2,7 +2,7 @@ package untils
 
 import java.security.MessageDigest
 
-trait EncryptPassword {
+object EncryptPassword {
   def encryptPassword(password: String): String = {
     val algorithm: MessageDigest = MessageDigest.getInstance("SHA-256")
     val defaultBytes: Array[Byte] = password.getBytes
