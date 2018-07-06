@@ -100,6 +100,7 @@ class PostControllerSpec extends PlaySpecification with Mockito {
         contentAsString(result) must contain("test@gmail.com")
       }
 
+
       "Unsuccess by system error" in {
         val postInfo = PostInfo("Post Success", "have all requirement", "test@gmail.com")
         mockPostDAO.insert(postInfo) returns Failure(new Exception)
