@@ -2,6 +2,6 @@ package controllers.authentication
 
 import play.api.mvc.Request
 
-trait AuthenticationSession {
+trait Authentication {
   def getMailInSession(implicit request: Request[Any]) = request.session.get("mail")
 }
