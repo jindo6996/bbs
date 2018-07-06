@@ -29,7 +29,7 @@ class AuthControllerSpec extends PlaySpecification with Mockito {
         val mockUserDAO: UserDao = mock[UserDao]
         val controller = new AuthController(mockUserDAO, stubControllerComponents())
         mockUserDAO.getUserByUsernamePassword(loginInfo) returns Success(user)
-        val result = controller.validate.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@gmail.com", "password" -> "123123").withCSRFToken)
+        val result = controller.processLogin.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@gmail.com", "password" -> "123123").withCSRFToken)
         redirectLocation(result) mustEqual (Some("/"))
         session(result).get("mail") mustEqual (Some("test@gmail.com"))
       }
@@ -37,21 +37,21 @@ class AuthControllerSpec extends PlaySpecification with Mockito {
         val mockUserDAO: UserDao = mock[UserDao]
         val controller = new AuthController(mockUserDAO, stubControllerComponents())
         mockUserDAO.getUserByUsernamePassword(loginInfo) returns Success(user)
-        val result = controller.validate.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "", "password" -> "123123").withCSRFToken)
+        val result = controller.processLogin.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "", "password" -> "123123").withCSRFToken)
         contentAsString(result) must contain("error.email")
       }
       "Login unsuccess because password is empty" in {
         val mockUserDAO: UserDao = mock[UserDao]
         val controller = new AuthController(mockUserDAO, stubControllerComponents())
         mockUserDAO.getUserByUsernamePassword(loginInfo) returns Success(user)
-        val result = controller.validate.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@gmail.com", "password" -> "").withCSRFToken)
+        val result = controller.processLogin.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@gmail.com", "password" -> "").withCSRFToken)
         contentAsString(result) must contain("error.required")
       }
       "since info wrong, login unsuccess then return user not found" in {
         val mockUserDAO: UserDao = mock[UserDao]
         val controller = new AuthController(mockUserDAO, stubControllerComponents())
         mockUserDAO.getUserByUsernamePassword(loginInfo) returns Failure(UserNotFoundException("User not found", loginInfo))
-        val result = controller.validate.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@gmail.com", "password" -> "123123").withCSRFToken)
+        val result = controller.processLogin.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@gmail.com", "password" -> "123123").withCSRFToken)
         contentAsString(result) must contain("User not found")
       }
       "login unsuccess because system error" in {
@@ -59,7 +59,7 @@ class AuthControllerSpec extends PlaySpecification with Mockito {
         val controller = new AuthController(mockUserDAO, stubControllerComponents())
         mockUserDAO.getUserByUsernamePassword(loginInfo) returns Failure(new Exception)
         println(mockUserDAO.getUserByUsernamePassword(loginInfo))
-        controller.validate.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@mail.com", "password" -> "123123").withCSRFToken) must throwA[Exception]
+        controller.processLogin.apply(FakeRequest(POST, "/login").withFormUrlEncodedBody("mail" -> "test@mail.com", "password" -> "123123").withCSRFToken) must throwA[Exception]
       }
     }
   }
