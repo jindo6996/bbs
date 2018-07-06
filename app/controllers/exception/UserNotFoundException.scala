@@ -1,3 +1,5 @@
 package controllers.exception
 
-case class UserNotFoundException(msg: String) extends Exception(msg)
+import controllers.form.login.LoginForm.LoginInfo
+
+case class UserNotFoundException[T](msg: String, user: T) extends Exception(msg)

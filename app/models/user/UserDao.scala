@@ -1,6 +1,6 @@
 package models.user
 
-import controllers.exception.{ UserNotFoundException }
+import controllers.exception.{ UserNotFoundException, FormErrorException }
 import controllers.form.login.LoginForm.LoginInfo
 import scalikejdbc.DB
 import scalikejdbc._
@@ -13,10 +13,10 @@ import scala.util.Try
 class UserDao() extends EncryptPassword {
   def getUserByUsernamePassword(loginInfo: LoginInfo)(implicit session: DBSession = AutoSession): Try[User] = Try {
     val password = encryptPassword(loginInfo.password)
-    sql"SELECT * FROM users WHERE mail=${loginInfo.mail} AND password=${password}".map(extractUser).single().apply()
-      .getOrElse(throw UserNotFoundException("User not found"))
+    sql"SELECT * FROM users WHERE mail=${loginInfo.mail} AND password=${password}".map(extract).single().apply()
+      .getOrElse(throw UserNotFoundException("User not found", loginInfo))
   }
-  private def extractUser(rs: WrappedResultSet): User = {
+  private def extract(rs: WrappedResultSet): User = {
     User(rs.int("id"), rs.string("mail"), rs.string("password"))
   }
 }

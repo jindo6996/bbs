@@ -6,11 +6,11 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
 
-GET     /login                      controllers.UserController.login
+GET     /login                      controllers.AuthController.login
 
-POST     /login                     controllers.UserController.validate
+POST     /login                     controllers.AuthController.validate
 
-GET     /logout                     controllers.UserController.logout
+GET     /logout                     controllers.AuthController.logout
 
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count

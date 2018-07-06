@@ -6,7 +6,7 @@
     @if(loginForm.hasGlobalErrors){
         <p>@loginForm.globalError.get.message</p>
     }
-    @helper.form(action =  helper.CSRF(routes.UserController.validate())) {
+    @helper.form(action =  helper.CSRF(routes.AuthController.validate())) {
         @helper.inputText(loginForm("mail"))
         @helper.inputPassword(loginForm("password"))
         <div class="actions">
