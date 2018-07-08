@@ -27,6 +27,10 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /posts/:id                  controllers.PostController.getPostByID(id:Int)
 
+GET     /users/register              controllers.UserController.addUser
+
+POST     /users/register              controllers.UserController.storeUser
+
 
 
 
