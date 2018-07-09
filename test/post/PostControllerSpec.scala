@@ -78,6 +78,37 @@ class PostControllerSpec extends PlaySpecification with Mockito {
         val result = controller.savePost().apply(FakeRequest().withCSRFToken)
         status(result) mustEqual (400)
       }
+      // user story 5
+      "go to add page with success with email filled if already logged in" in {
+        val result = controller.addPost().apply(FakeRequest(GET, "/posts/add").withSession("mail" -> "test@gmail.com").withCSRFToken)
+        status(result) mustEqual (200)
+        contentAsString(result) must contain("test@gmail.com")
+      }
+    }
+    "savePost when logged in" in {
+      "when request's mail not match user'mail (user is logging), save with user'mail not request's mail" in {
+        val post1 = Post(5, "Post Success", "have all requirement", "test@gmail.com")
+        val postInfo = PostInfo("Post Success", "have all requirement", "test@gmail.com")
+        mockPostDAO.insert(postInfo) returns Success(5)
+        mockPostDAO.getByID(5) returns Success(Option(post1))
+        val result = controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody(
+          "title" -> "Post Success",
+          "content" -> "have all requirement",
+          "email" -> "testmailfail@gmail.com"
+        ).withSession("mail" -> "test@gmail.com").withCSRFToken)
+        contentAsString(result) must not contain ("testmailfail@gmail.com")
+        contentAsString(result) must contain("test@gmail.com")
+      }
+
+      "Unsuccess by system error" in {
+        val postInfo = PostInfo("Post Success", "have all requirement", "test@gmail.com")
+        mockPostDAO.insert(postInfo) returns Failure(new Exception)
+        controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody(
+          "title" -> "Post Success",
+          "content" -> "have all requirement",
+          "email" -> "test@gmail.com"
+        ).withSession("mail" -> "test@gmail.com").withCSRFToken) must throwAn[Exception]
+      }
     }
 
   }

@@ -11,7 +11,7 @@ import scala.util.Try
 class PostDao() {
   def getAll: Try[List[Post]] = Try {
     DB readOnly { implicit session =>
-      sql"SELECT * FROM posts".map(extract).list.apply()
+      sql"SELECT * FROM posts ORDER BY id DESC ".map(extract).list.apply()
     }
   }
   def getByID(id: Int): Try[Option[Post]] = Try {
