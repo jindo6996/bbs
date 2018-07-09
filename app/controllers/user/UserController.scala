@@ -18,19 +18,6 @@ class UserController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
       Redirect(routes.HomeController.index())).getOrElse(Ok(views.html.user.register(registerForm)))
   }
   def storeUser = Action { implicit request =>
-    //    val result = for {
-    //      registerForm <- validateForm(registerForm)
-    //      if registerForm.rePassword == registerForm.password
-    //      id <- userDao.insert(registerForm)
-    //    } yield registerForm
-    //    result match {
-    //      case Success(regisForm) => Redirect(routes.HomeController.index()).withSession("mail" -> regisForm.mail)
-    //      case Failure(e: Exception) => e match {
-    //        case formErr: FormErrorException[RegisterInfo] => BadRequest(views.html.user.register(formErr.formError))
-    //        case emailExist: MySQLIntegrityConstraintViolationException if emailExist.getMessage.contains("Duplicate entry") => BadRequest(views.html.user.register(registerForm.bindFromRequest().withGlobalError("Email is already registered")))
-    //        case passwordNotMatch: NoSuchElementException => BadRequest(views.html.user.register(registerForm.bindFromRequest().withGlobalError("Password does not match the confirm password")))
-    //      }
-    //    }
     (for {
       registerForm <- validateForm(registerForm)
       if registerForm.rePassword == registerForm.password

@@ -103,11 +103,12 @@ class PostControllerSpec extends PlaySpecification with Mockito {
       "Unsuccess by system error" in {
         val postInfo = PostInfo("Post Success", "have all requirement", "test@gmail.com")
         mockPostDAO.insert(postInfo) returns Failure(new Exception)
-        controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody(
+        val result = controller.savePost().apply(FakeRequest(POST, "/posts/store").withFormUrlEncodedBody(
           "title" -> "Post Success",
           "content" -> "have all requirement",
           "email" -> "test@gmail.com"
-        ).withSession("mail" -> "test@gmail.com").withCSRFToken) must throwAn[Exception]
+        ).withSession("mail" -> "test@gmail.com").withCSRFToken)
+        status(result) mustEqual (500)
       }
     }
 
