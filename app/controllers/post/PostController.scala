@@ -6,8 +6,6 @@ import play.api.mvc._
 import models.post.PostDao
 import controllers.exception._
 
-import scala.util.{ Failure, Success }
-
 @Singleton
 class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) extends AbstractController(cc) with play.api.i18n.I18nSupport with BaseController with Authentication {
   def listPost = Action { implicit request =>
@@ -24,7 +22,6 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
       val postFormLogged = postForm.fill(postInfo)
       Ok(views.html.post.addPost(postFormLogged))
     }.getOrElse(Ok(views.html.post.addPost(postForm)))
-
   }
 //------------
   def savePost() = Action { implicit request =>
