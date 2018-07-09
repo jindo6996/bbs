@@ -18,7 +18,7 @@ class UserDao() {
   }
   def insert(registerInfo: RegisterInfo)(implicit session: DBSession = AutoSession): Try[Long] = Try {
     val password = encryptPassword(registerInfo.password)
-    sql"insert into users(mail,password) values (${registerInfo.mail}, ${password})".update().apply()
+    sql"insert into users(mail,password) values (${registerInfo.mail}, ${password})".updateAndReturnGeneratedKey().apply()
   }
   private def extract(rs: WrappedResultSet): User = {
     User(rs.int("id"), rs.string("mail"), rs.string("password"))

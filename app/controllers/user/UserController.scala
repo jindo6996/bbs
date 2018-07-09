@@ -21,7 +21,7 @@ class UserController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
     val result = for {
       registerForm <- validateForm(registerForm)
       if registerForm.rePassword == registerForm.password
-      none <- userDao.insert(registerForm)
+      id <- userDao.insert(registerForm)
     } yield registerForm
     result match {
       case Success(regisForm) => Redirect(routes.HomeController.index()).withSession("mail" -> regisForm.mail)
