@@ -7,7 +7,7 @@ object RegisterForm {
   case class RegisterInfo(mail: String, password: String, rePassword: String)
   val registerForm = Form(
     mapping(
-      "mail" -> nonEmptyText,
+      "mail" -> email,
       "password" -> nonEmptyText,
       "rePassword" -> nonEmptyText
     )(RegisterInfo.apply)(RegisterInfo.unapply)
