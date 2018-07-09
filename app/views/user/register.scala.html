@@ -1,0 +1,17 @@
+@import controllers.form.user.RegisterForm
+@(registerForm: Form[RegisterForm.RegisterInfo])(implicit request: Request[_], messagesProvider: MessagesProvider)
+
+@main("Register"){
+    <h2>Register</h2>
+    @if(registerForm.hasGlobalErrors){
+        <p>@registerForm.globalError.get.message</p>
+    }
+    @helper.form(action =  helper.CSRF(routes.UserController.storeUser())) {
+        @helper.inputText(registerForm("mail"))
+        @helper.inputPassword(registerForm("password"))
+        @helper.inputPassword(registerForm("rePassword"))
+        <div class="actions">
+            <button type="submit" value="register" name = "Submit">Submit</button>
+        </div>
+    }
+}

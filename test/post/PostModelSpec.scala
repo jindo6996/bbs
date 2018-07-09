@@ -1,12 +1,9 @@
 package postTest
 
 import controllers.form.post.PostForm.PostInfo
-import models.post.{ Post, PostDao }
-import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
+import models.post.PostDao
 import play.api.test.PlaySpecification
 import scalikejdbc._
-import scalikejdbc.config._
 import setup._
 
 import scala.util.{ Failure, Success }
@@ -22,7 +19,7 @@ class PostSpecTest extends PlaySpecification with DBSetting {
         using(ConnectionPool.borrow()) { conn =>
           implicit val session: DBSession = AutoSession
           sql"DELETE FROM posts".update.apply()
-          var postsEmpty = postModels.getAll match {
+          val postsEmpty = postModels.getAll match {
             case Success(posts) => posts
           }
           postsEmpty.size must beEqualTo(0)
