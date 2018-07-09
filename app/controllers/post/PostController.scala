@@ -23,7 +23,7 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
       Ok(views.html.post.addPost(postFormLogged))
     }.getOrElse(Ok(views.html.post.addPost(postForm)))
   }
-//------------
+  //------------
   def savePost() = Action { implicit request =>
     (for {
       post <- validateForm(postForm)
@@ -34,7 +34,6 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
       Ok(views.html.post.viewPost(postShow))
     }).recover {
       case formErr: FormErrorException[PostInfo] => BadRequest(views.html.post.addPost(formErr.formError))
-      case _                                     => InternalServerError("Unknown")
     }.get
   }
 }
