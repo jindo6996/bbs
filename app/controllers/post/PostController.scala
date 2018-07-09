@@ -26,19 +26,18 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
     }.getOrElse(Ok(views.html.post.addPost(postForm)))
 
   }
-  //------------
+//------------
   def savePost() = Action { implicit request =>
-    val result = for {
+    (for {
       post <- validateForm(postForm)
-      postSolve = post.copy(email = getMailInSession.getOrElse(post.email))
-      id <- postDao.insert(postSolve)
-    } yield id
-    result match {
-      case Success(id) => Ok(views.html.post.viewPost(postDao.getByID(id.toInt).get))
-      case Failure(e: Exception) => e match {
-        case formErr: FormErrorException[PostInfo] => BadRequest(views.html.post.addPost(formErr.formError))
-        case _                                     => InternalServerError(e.getMessage)
-      }
-    }
+      postSave = post.copy(email = getMailInSession.getOrElse(post.email))
+      id <- postDao.insert(postSave)
+      postShow <- postDao.getByID(id.toInt)
+    } yield {
+      Ok(views.html.post.viewPost(postShow))
+    }).recover {
+      case formErr: FormErrorException[PostInfo] => BadRequest(views.html.post.addPost(formErr.formError))
+      case _                                     => InternalServerError("Unknown")
+    }.get
   }
 }
