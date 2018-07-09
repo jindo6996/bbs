@@ -3,7 +3,7 @@ import controllers.authentication.Authentication
 import controllers.form.post.PostForm.{ PostInfo, postForm }
 import javax.inject._
 import play.api.mvc._
-import models.post.{ Post, PostDao }
+import models.post.PostDao
 import controllers.exception._
 
 import scala.util.{ Failure, Success }
