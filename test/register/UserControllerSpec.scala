@@ -56,12 +56,11 @@ class UserControllerSpec extends PlaySpecification with Mockito {
       "store unsuccess because system error" in {
         val registerInfo = RegisterInfo("test@gmail.com", "123123", "123123")
         mockUserDao.insert(registerInfo) returns Failure(new Exception)
-        val result = controller.storeUser.apply(FakeRequest(POST, "/users/register").withFormUrlEncodedBody(
+        controller.storeUser.apply(FakeRequest(POST, "/users/register").withFormUrlEncodedBody(
           "mail" -> "test@gmail.com",
           "password" -> "123123",
           "rePassword" -> "123123"
-        ).withCSRFToken)
-        status(result) mustEqual (500)
+        ).withCSRFToken) must throwAn[Exception]
       }
     }
   }

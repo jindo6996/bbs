@@ -28,7 +28,6 @@ class UserController @Inject() (userDao: UserDao, cc: ControllerComponents) exte
       case formErr: FormErrorException[RegisterInfo] => BadRequest(views.html.user.register(formErr.formError))
       case emailExist: MySQLIntegrityConstraintViolationException if emailExist.getMessage.contains("Duplicate entry") => BadRequest(views.html.user.register(registerForm.bindFromRequest().withGlobalError("Email is already registered")))
       case passwordNotMatch: NoSuchElementException => BadRequest(views.html.user.register(registerForm.bindFromRequest().withGlobalError("Password does not match the confirm password")))
-      case _ => InternalServerError("Unknown")
     }.get
   }
 }

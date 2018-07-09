@@ -37,7 +37,6 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
       Ok(views.html.post.viewPost(postShow))
     }).recover {
       case formErr: FormErrorException[PostInfo] => BadRequest(views.html.post.addPost(formErr.formError))
-      case _                                     => InternalServerError("Unknown")
     }.get
   }
 }
