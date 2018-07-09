@@ -30,7 +30,7 @@ class PostController @Inject() (postDao: PostDao, cc: ControllerComponents) exte
   def savePost() = Action { implicit request =>
     val result = for {
       post <- validateForm(postForm)
-      postSolve = post.copy(email = if (getMailInSession.isDefined) getMailInSession.get else post.email)
+      postSolve = post.copy(email = getMailInSession.getOrElse(post.email))
       id <- postDao.insert(postSolve)
     } yield id
     result match {
